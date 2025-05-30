@@ -1,8 +1,14 @@
 package get_requests;
 
+import baseurl.PetStoreBaseUrl;
+import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
 
-public class Get05 {
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
+
+public class Get05 extends PetStoreBaseUrl {
     /*
     Given
         https://petstore.swagger.io/v2/pet/findByStatus?status=available
@@ -33,8 +39,34 @@ public class Get05 {
     @Test
     public void test01() {
         // 1- Set the url =>API in end pointi ayarlayin
+        spec.pathParams("first", "pet", "second", "findByStatus")
+                .queryParam("status", "available");
+
         // 2- Set the expected data => Beklenen datayi ayarlayın
         // 3- Send request get response => isteği gönderin ve cevabi alin
-        // 4- Do assertion => response tan doğrulamalar yapin
+        given(spec)
+                .when()
+                .get("{first}/{second}")
+                .then() // 4- Do assertion => response tan doğrulamalar yapin
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                //bu method response body deki tum json datalirn id field larinda 313 degeri varmi yokmu diye kontrol eder
+                .body("id", Matchers.hasItem(313))
+                .body("name", Matchers.hasItem("ELMAS"))
+                .body("name", Matchers.hasItems("ELMAS", "doggie", "fish"))
+                //response body deki id field larin sayisinin boyutunun 200 den buyuk olup olmadigini test ediyoruz
+                .body("id", hasSize(greaterThan(200)))
+                //response body deki id field larin sayisinin boyutunun 500 den kücük olup olmadigini test ediyoruz
+                .body("id", hasSize(lessThan(500)))
+                //homework
+                //Listenin ilk elemanının category - id değeri 0 olmalı
+                .body("[0].category.id", equalTo(0))
+                // Listenin ilk elemanının photoUrls değeri "string" olmalı
+                .body("[0].photoUrls[0]", equalTo("string"))
+                //Listenin ilk elemanının tags - id değeri 0 olmalı
+                .body("[0].tags[0].id", equalTo(0))
+                //homework
+                .log().body();
+
     }
 }

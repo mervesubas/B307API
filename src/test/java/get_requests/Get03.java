@@ -39,7 +39,7 @@ public class Get03 {
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("name", Matchers.containsString("Tekir"))
+                .body("name", Matchers.containsString("ELMAS"))
                 .body("status", Matchers.equalTo("available"))
                 .body("category.name", Matchers.equalTo("CAT"))
                 .body("tags[0].name", Matchers.equalTo("bird"))
