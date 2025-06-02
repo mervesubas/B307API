@@ -58,14 +58,9 @@ public class Get05 extends PetStoreBaseUrl {
                 .body("id", hasSize(greaterThan(200)))
                 //response body deki id field larin sayisinin boyutunun 500 den kücük olup olmadigini test ediyoruz
                 .body("id", hasSize(lessThan(500)))
-                //homework
-                //Listenin ilk elemanının category - id değeri 0 olmalı
-                .body("[0].category.id", equalTo(0))
-                // Listenin ilk elemanının photoUrls değeri "string" olmalı
-                .body("[0].photoUrls[0]", equalTo("string"))
-                //Listenin ilk elemanının tags - id değeri 0 olmalı
-                .body("[0].tags[0].id", equalTo(0))
-                //homework
+                .body("[0].category.id",Matchers.equalTo(0))
+                .body("[0].photoUrls[0]",Matchers.equalTo("string"))
+                .body("[0].tags[0].id",Matchers.equalTo(0))
                 .log().body();
 
     }
